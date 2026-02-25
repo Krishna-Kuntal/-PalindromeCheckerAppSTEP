@@ -27,7 +27,7 @@ public class PalindromeCheckerApp {
         String input = scanner.nextLine();
         String reversed = new StringBuilder(input).reverse().toString();
 
-        if (input.equals(reversed)) {
+        if (input.equalsIgnoreCase(reversed)) {
             System.out.println("Palindrome");
         } else {
             System.out.println("Not a Palindrome");
