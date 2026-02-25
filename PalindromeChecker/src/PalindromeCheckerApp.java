@@ -3,21 +3,27 @@ import java.util.Deque;
 import java.util.ArrayDeque;
 
 public class PalindromeCheckerApp {
-    // Recursive method to check palindrome
-    public static boolean isPalindrome(String str, int start, int end) {
+    // Method to check palindrome after normalization
+    public static boolean isPalindrome(String input) {
 
-        // Base condition: If start crosses end
-        if (start >= end) {
-            return true;
+        // Step 1: Normalize string
+        String cleaned = input
+                .replaceAll("[^a-zA-Z0-9]", "")   // remove spaces & special chars
+                .toLowerCase();                  // convert to lowercase
+
+        // Step 2: Apply two-pointer logic
+        int left = 0;
+        int right = cleaned.length() - 1;
+
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
 
-        // If characters do not match
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call
-        return isPalindrome(str, start + 1, end - 1);
+        return true;
     }
 
     public static void main(String[] args) {
@@ -25,17 +31,14 @@ public class PalindromeCheckerApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=================================");
-        System.out.println(" Recursive Palindrome Checker ");
+        System.out.println(" Case-Insensitive Palindrome ");
         System.out.println("=================================");
 
-        System.out.print("Enter a string: ");
+        System.out.print("Enter a sentence: ");
         String input = scanner.nextLine();
 
-        // Clean input (remove special chars & lowercase)
-        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        if (isPalindrome(cleaned, 0, cleaned.length() - 1)) {
-            System.out.println("Palindrome (Using Recursion)");
+        if (isPalindrome(input)) {
+            System.out.println("Palindrome (Ignoring Case & Spaces)");
         } else {
             System.out.println("Not a Palindrome");
         }
