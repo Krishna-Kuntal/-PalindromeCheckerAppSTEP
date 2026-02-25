@@ -1,44 +1,55 @@
 import java.util.Scanner;
 import java.util.Deque;
 import java.util.ArrayDeque;
+import java.util.Stack;
 
-public class PalindromeCheckerApp {
-    // Method to check palindrome after normalization
-    public static boolean isPalindrome(String input) {
+// Service Class
+class PalindromeChecker {
 
-        // Step 1: Normalize string
+    // Public method exposed to client
+    public boolean checkPalindrome(String input) {
+
+        // Normalize string
         String cleaned = input
-                .replaceAll("[^a-zA-Z0-9]", "")   // remove spaces & special chars
-                .toLowerCase();                  // convert to lowercase
+                .replaceAll("[^a-zA-Z0-9]", "")
+                .toLowerCase();
 
-        // Step 2: Apply two-pointer logic
-        int left = 0;
-        int right = cleaned.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (left < right) {
-            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+        // Push characters into stack
+        for (char ch : cleaned.toCharArray()) {
+            stack.push(ch);
+        }
+
+        // Compare original with stack pop
+        for (char ch : cleaned.toCharArray()) {
+            if (ch != stack.pop()) {
                 return false;
             }
-            left++;
-            right--;
         }
 
         return true;
     }
-
+}
+public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=================================");
-        System.out.println(" Case-Insensitive Palindrome ");
+        System.out.println(" OOPS Palindrome Checker ");
         System.out.println("=================================");
 
-        System.out.print("Enter a sentence: ");
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        if (isPalindrome(input)) {
-            System.out.println("Palindrome (Ignoring Case & Spaces)");
+        // Create object of service class
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("Palindrome (Using OOPS Service)");
         } else {
             System.out.println("Not a Palindrome");
         }
