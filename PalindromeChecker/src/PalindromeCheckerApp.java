@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class PalindromeCheckerApp {
 
@@ -8,75 +10,47 @@ public class PalindromeCheckerApp {
         System.out.println(" Version 1.0 ");
         System.out.println("=================================");
     }
+    // UC7: Deque Based Optimized Palindrome
+    public static void dequePalindromeChecker() {
 
-    public static void hardcodedPalindrome() {
-        String word = "madam";
-        String reversed = new StringBuilder(word).reverse().toString();
-
-        if (word.equals(reversed)) {
-            System.out.println(word + " is a Palindrome");
-        } else {
-            System.out.println(word + " is NOT a Palindrome");
-        }
-    }
-
-    // UC3: User Input
-    public static void userInputPalindrome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a word: ");
-        String input = scanner.nextLine();
-        String reversed = new StringBuilder(input).reverse().toString();
-
-        if (input.equalsIgnoreCase(reversed)) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a Palindrome");
-        }
-    }
-    public static void advancedPalindrome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a sentence: ");
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
+        // Remove spaces & convert to lowercase
         String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        String reversed = new StringBuilder(cleaned).reverse().toString();
 
-        if (cleaned.equals(reversed)) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a Palindrome");
+        Deque<Character> deque = new ArrayDeque<>();
+
+        // Insert characters into deque
+        for (char ch : cleaned.toCharArray()) {
+            deque.addLast(ch);
         }
-    }
-    public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-        displayWelcome();
+        boolean isPalindrome = true;
 
-        while (true) {
-            System.out.println("\n1. Hardcoded");
-            System.out.println("2. User Input");
-            System.out.println("3. Advanced");
-            System.out.println("4. Exit");
-            System.out.print("Choose option: ");
+        // Compare front and rear
+        while (deque.size() > 1) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1:
-                    hardcodedPalindrome();
-                    break;
-                case 2:
-                    userInputPalindrome();
-                    break;
-                case 3:
-                    advancedPalindrome();
-                    break;
-                case 4:
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid choice");
+            if (front != rear) {
+                isPalindrome = false;
+                break;
             }
         }
+
+        if (isPalindrome) {
+            System.out.println("Palindrome (Using Deque)");
+        } else {
+            System.out.println("Not a Palindrome");
+        }
     }
+
+    public static void main(String[] args) {
+
+        displayWelcome();
+        dequePalindromeChecker();
+    }
+
 }
